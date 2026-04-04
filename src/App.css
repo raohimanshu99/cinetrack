@@ -1,0 +1,17 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.app-footer {
+  border-top: 1px solid var(--gray-100);
+  padding: 20px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray-400);
+}

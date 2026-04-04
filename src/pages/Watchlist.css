@@ -1,0 +1,167 @@
+.watchlist-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.watchlist-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.watchlist-count {
+  font-size: 14px;
+  color: var(--gray-400);
+}
+
+.watchlist-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--gray-900);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+.watchlist-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.wl-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  background: var(--white);
+  transition: all 0.15s;
+}
+
+.wl-filter-btn:hover {
+  border-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+.wl-filter-btn.active {
+  background: var(--gray-900);
+  border-color: var(--gray-900);
+  color: white;
+}
+
+.wl-count {
+  background: rgba(255,255,255,0.25);
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.wl-filter-btn:not(.active) .wl-count {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 20px;
+}
+
+.watchlist-empty {
+  text-align: center;
+  padding: 80px 24px;
+}
+
+.watchlist-empty-filter {
+  color: var(--gray-400);
+  font-size: 14px;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 40px;
+  color: var(--gray-200);
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gray-800);
+  margin-bottom: 8px;
+}
+
+.empty-sub {
+  font-size: 14px;
+  color: var(--gray-400);
+  margin-bottom: 24px;
+}
+
+.btn-browse {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  background: var(--gray-900);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.btn-browse:hover {
+  background: var(--gray-800);
+}
+
+@media (max-width: 500px) {
+  .movies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .watchlist-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .stat-num { font-size: 22px; }
+}

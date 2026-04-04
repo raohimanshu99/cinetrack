@@ -1,0 +1,75 @@
+import React, { useState, useMemo } from 'react';
+import MovieCard from '../components/MovieCard';
+import SearchBar from '../components/SearchBar';
+import FilterBar from '../components/FilterBar';
+import { MOVIES_DATA } from '../data/movies';
+import './Home.css';
+
+function Home() {
+  const [search, setSearch] = useState('');
+  const [activeType, setActiveType] = useState('All');
+  const [activeGenre, setActiveGenre] = useState('All');
+
+  const allGenres = useMemo(() => {
+    const set = new Set();
+    MOVIES_DATA.forEach((m) => m.genre.forEach((g) => set.add(g)));
+    return Array.from(set).sort();
+  }, []);
+
+  const filtered = useMemo(() => {
+    return MOVIES_DATA.filter((movie) => {
+      const matchSearch =
+        movie.title.toLowerCase().includes(search.toLowerCase()) ||
+        movie.genre.some((g) => g.toLowerCase().includes(search.toLowerCase()));
+      const matchType = activeType === 'All' || movie.type === activeType;
+      const matchGenre = activeGenre === 'All' || movie.genre.includes(activeGenre);
+      return matchSearch && matchType && matchGenre;
+    });
+  }, [search, activeType, activeGenre]);
+
+  return (
+    <div className="home-page">
+      <div className="home-hero">
+        <h1 className="home-headline">
+          Your personal<br />
+          <span className="home-headline-serif">movie tracker.</span>
+        </h1>
+        <p className="home-sub">
+          Browse {MOVIES_DATA.length} titles. Save what you want to watch.
+        </p>
+      </div>
+
+      <div className="home-controls">
+        <SearchBar value={search} onChange={setSearch} placeholder="Search titles, genres..." />
+        <FilterBar
+          activeType={activeType}
+          activeGenre={activeGenre}
+          onTypeChange={setActiveType}
+          onGenreChange={setActiveGenre}
+          genres={allGenres}
+        />
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="empty-state">
+          <p className="empty-icon">◎</p>
+          <p className="empty-text">No results for "{search}"</p>
+          <button className="empty-reset" onClick={() => { setSearch(''); setActiveType('All'); setActiveGenre('All'); }}>
+            Clear filters
+          </button>
+        </div>
+      ) : (
+        <>
+          <p className="results-count">{filtered.length} titles</p>
+          <div className="movies-grid">
+            {filtered.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default Home;

@@ -1,0 +1,39 @@
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-btn {
+  padding: 5px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--gray-200);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--gray-600);
+  background: var(--white);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  border-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+.filter-btn.active {
+  background: var(--gray-900);
+  border-color: var(--gray-900);
+  color: white;
+  font-weight: 500;
+}
+
+.genre-group {
+  padding-top: 2px;
+}
