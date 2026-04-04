@@ -9,7 +9,7 @@ Browse titles, save what you want to watch, and track your progress — all in y
 
 ## 🖥️ Live Demo
 
-🔗 [View Live on GitHub Pages](#)
+🔗 [View Live on GitHub Pages](https://raohimanshu99.github.io/cinetrack/)
 
 ---
 
