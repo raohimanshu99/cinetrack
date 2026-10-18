@@ -7,35 +7,47 @@ function FilterBar({ activeType, activeGenre, onTypeChange, onGenreChange, genre
 
   return (
     <div className="filter-bar">
-      <div className="filter-group">
-        {types.map((type) => (
-          <button
-            key={type}
-            className={`filter-btn ${activeType === type ? 'active' : ''}`}
-            onClick={() => onTypeChange(type)}
-          >
-            {type}
-          </button>
-        ))}
+      <div className="filter-row">
+        <span className="filter-label">Type</span>
+        <div className="filter-group" role="group" aria-label="Filter by type">
+          {types.map((type) => (
+            <button
+              type="button"
+              key={type}
+              className={`filter-btn ${activeType === type ? 'active' : ''}`}
+              onClick={() => onTypeChange(type)}
+              aria-pressed={activeType === type}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
       </div>
 
       {genres.length > 0 && (
-        <div className="filter-group genre-group">
-          <button
-            className={`filter-btn ${activeGenre === 'All' ? 'active' : ''}`}
-            onClick={() => onGenreChange('All')}
-          >
-            All Genres
-          </button>
-          {genres.map((genre) => (
+        <div className="filter-row">
+          <span className="filter-label">Genre</span>
+          <div className="filter-group genre-group" role="group" aria-label="Filter by genre">
             <button
-              key={genre}
-              className={`filter-btn ${activeGenre === genre ? 'active' : ''}`}
-              onClick={() => onGenreChange(genre)}
+              type="button"
+              className={`filter-btn ${activeGenre === 'All' ? 'active' : ''}`}
+              onClick={() => onGenreChange('All')}
+              aria-pressed={activeGenre === 'All'}
             >
-              {genre}
+              All Genres
             </button>
-          ))}
+            {genres.map((genre) => (
+              <button
+                type="button"
+                key={genre}
+                className={`filter-btn ${activeGenre === genre ? 'active' : ''}`}
+                onClick={() => onGenreChange(activeGenre === genre ? 'All' : genre)}
+                aria-pressed={activeGenre === genre}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

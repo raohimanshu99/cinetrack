@@ -68,15 +68,28 @@ class About extends React.Component {
                 key={i}
                 className={`feature-item ${this.state.expandedFeature === i ? 'expanded' : ''}`}
               >
-                <button className="feature-header" onClick={() => this.toggleFeature(i)}>
+                <button
+                  type="button"
+                  id={`feature-trigger-${i}`}
+                  className="feature-header"
+                  onClick={() => this.toggleFeature(i)}
+                  aria-expanded={this.state.expandedFeature === i}
+                  aria-controls={`feature-panel-${i}`}
+                >
                   <span className="feature-title">{f.title}</span>
-                  <span className="feature-toggle">
+                  <span className="feature-toggle" aria-hidden="true">
                     {this.state.expandedFeature === i ? '−' : '+'}
                   </span>
                 </button>
-                {this.state.expandedFeature === i && (
+                <div
+                  id={`feature-panel-${i}`}
+                  className="feature-panel"
+                  role="region"
+                  aria-labelledby={`feature-trigger-${i}`}
+                  hidden={this.state.expandedFeature !== i}
+                >
                   <p className="feature-desc">{f.desc}</p>
-                )}
+                </div>
               </div>
             ))}
           </div>
@@ -109,7 +122,6 @@ class About extends React.Component {
               'Props & PropTypes',
               'Context API',
               'React Router v6',
-              'CSS Modules',
             ].map((c) => (
               <span key={c} className="concept-tag">{c}</span>
             ))}

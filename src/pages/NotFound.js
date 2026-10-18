@@ -4,12 +4,12 @@ import './NotFound.css';
 
 function NotFound() {
   return (
-    <div className="notfound-page">
-      <p className="notfound-code">404</p>
-      <h1 className="notfound-title">Page not found</h1>
-      <p className="notfound-sub">The page you're looking for doesn't exist.</p>
-      <Link to="/" className="notfound-btn">Go Home</Link>
-    </div>
+    <section className="notfound-page" aria-labelledby="notfound-title">
+      <p className="notfound-code" aria-hidden="true">404</p>
+      <h1 className="notfound-title" id="notfound-title">Page not found</h1>
+      <p className="notfound-sub">The page you’re looking for doesn’t exist or may have moved.</p>
+      <Link to="/" className="notfound-btn">Back to Browse</Link>
+    </section>
   );
 }
 

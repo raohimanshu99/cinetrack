@@ -49,24 +49,28 @@ function Navbar() {
   ];
 
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} aria-label="Primary navigation">
       <div className="navbar-inner">
         <NavBrand />
 
         <button
+          type="button"
           className="menu-toggle"
           onClick={() => setMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation-links"
         >
-          <span className={`hamburger ${menuOpen ? 'open' : ''}`} />
+          <span className={`hamburger ${menuOpen ? 'open' : ''}`} aria-hidden="true" />
         </button>
 
-        <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
+        <ul id="primary-navigation-links" className={`nav-links ${menuOpen ? 'open' : ''}`}>
           {navLinks.map(({ to, label }) => (
             <li key={to}>
               <Link
                 to={to}
                 className={`nav-link ${location.pathname === to ? 'active' : ''}`}
+                aria-current={location.pathname === to ? 'page' : undefined}
               >
                 {label}
                 {to === '/watchlist' && watchlist.length > 0 && (
