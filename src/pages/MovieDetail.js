@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MOVIES_DATA } from '../data/movies';
 import { useWatchlist, STATUS } from '../context/WatchlistContext';
@@ -11,17 +11,28 @@ function MovieDetail() {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist, getStatus, updateStatus } = useWatchlist();
   const [imgError, setImgError] = useState(false);
 
+  useEffect(() => {
+    setImgError(false);
+  }, [movie?.poster]);
+
   if (!movie) {
     return (
       <div className="detail-not-found">
         <p>Movie not found.</p>
-        <button onClick={() => navigate('/')}>Go back</button>
+        <button type="button" onClick={() => navigate('/')}>Go back</button>
       </div>
     );
   }
 
   const inList = isInWatchlist(movie.id);
   const currentStatus = getStatus(movie.id);
+  const metadata = [
+    movie.rating != null && { key: 'rating', label: `★ ${movie.rating}` },
+    movie.year != null && { key: 'year', label: movie.year },
+    movie.duration && { key: 'duration', label: movie.duration },
+  ].filter(Boolean);
+  const cast = Array.isArray(movie.cast) ? movie.cast.filter(Boolean) : [];
+  const genres = Array.isArray(movie.genre) ? movie.genre.filter(Boolean) : [];
 
   const handleToggle = () => {
     if (inList) {
@@ -33,54 +44,73 @@ function MovieDetail() {
 
   return (
     <div className="detail-page">
-      <button className="detail-back" onClick={() => navigate(-1)}>
+      <button type="button" className="detail-back" onClick={() => navigate(-1)}>
         ← Back
       </button>
 
       <div className="detail-layout">
         <aside className="detail-poster">
-          <img
-            src={imgError ? `https://via.placeholder.com/400x600/f4f4f2/9a9a96?text=${encodeURIComponent(movie.title)}` : movie.poster}
-            alt={movie.title}
-            onError={() => setImgError(true)}
-          />
+          {imgError || !movie.poster ? (
+            <div className="detail-poster-fallback" role="img" aria-label={`Poster unavailable for ${movie.title}`}>
+              <span>{movie.title}</span>
+              <small>Poster unavailable</small>
+            </div>
+          ) : (
+            <img
+              src={movie.poster}
+              alt={movie.title}
+              onError={() => setImgError(true)}
+            />
+          )}
         </aside>
 
         <main className="detail-info">
-          <div className="detail-badges">
-            <span className="badge badge-type">{movie.type}</span>
-            {movie.genre.map((g) => (
-              <span key={g} className="badge badge-genre">{g}</span>
-            ))}
-          </div>
+          {(movie.type || genres.length > 0) && (
+            <div className="detail-badges">
+              {movie.type && <span className="badge badge-type">{movie.type}</span>}
+              {genres.map((g) => (
+                <span key={g} className="badge badge-genre">{g}</span>
+              ))}
+            </div>
+          )}
 
           <h1 className="detail-title">{movie.title}</h1>
 
-          <div className="detail-meta">
-            <span className="detail-rating">★ {movie.rating}</span>
-            <span className="detail-dot">·</span>
-            <span>{movie.year}</span>
-            <span className="detail-dot">·</span>
-            <span>{movie.duration}</span>
-          </div>
-
-          <p className="detail-description">{movie.description}</p>
-
-          <div className="detail-crew">
-            <div className="detail-crew-item">
-              <span className="detail-crew-label">Director</span>
-              <span className="detail-crew-value">{movie.director}</span>
+          {metadata.length > 0 && (
+            <div className="detail-meta" role="group" aria-label="Movie information">
+              {metadata.map((item) => (
+                <span className={item.key === 'rating' ? 'detail-rating' : ''} key={item.key}>
+                  {item.label}
+                </span>
+              ))}
             </div>
-            <div className="detail-crew-item">
-              <span className="detail-crew-label">Cast</span>
-              <span className="detail-crew-value">{movie.cast.join(', ')}</span>
+          )}
+
+          {movie.description && <p className="detail-description">{movie.description}</p>}
+
+          {(movie.director || cast.length > 0) && (
+            <div className="detail-crew">
+              {movie.director && (
+                <div className="detail-crew-item">
+                  <span className="detail-crew-label">Director</span>
+                  <span className="detail-crew-value">{movie.director}</span>
+                </div>
+              )}
+              {cast.length > 0 && (
+                <div className="detail-crew-item">
+                  <span className="detail-crew-label">Cast</span>
+                  <span className="detail-crew-value">{cast.join(', ')}</span>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           <div className="detail-actions">
             <button
+              type="button"
               className={`btn-primary ${inList ? 'in-list' : ''}`}
               onClick={handleToggle}
+              aria-pressed={inList}
             >
               {inList ? '✓ In Watchlist' : '+ Add to Watchlist'}
             </button>
@@ -88,13 +118,15 @@ function MovieDetail() {
 
           {inList && (
             <div className="detail-status-section">
-              <p className="detail-status-label">Status</p>
+              <h2 className="detail-status-label">Status</h2>
               <div className="detail-status-btns">
                 {Object.values(STATUS).map((s) => (
                   <button
+                    type="button"
                     key={s}
                     className={`status-btn ${currentStatus === s ? 'active' : ''}`}
                     onClick={() => updateStatus(movie.id, s)}
+                    aria-pressed={currentStatus === s}
                   >
                     {s}
                   </button>

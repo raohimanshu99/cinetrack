@@ -1,14 +1,28 @@
+.search-control {
+  display: grid;
+  gap: var(--space-2);
+  width: min(100%, 42rem);
+}
+
+.search-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 .search-bar {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .search-icon {
   position: absolute;
-  left: 14px;
-  font-size: 18px;
-  color: var(--gray-400);
+  left: var(--space-4);
+  font-size: 1.25rem;
+  color: var(--text-tertiary);
   pointer-events: none;
   line-height: 1;
   top: 50%;
@@ -17,43 +31,46 @@
 
 .search-input {
   width: 100%;
-  height: 44px;
-  padding: 0 40px 0 42px;
+  height: 48px;
+  padding: 0 3.5rem 0 3rem;
   border-radius: var(--radius-md);
-  border: 1px solid var(--gray-100);
-  background: var(--white);
-  font-size: 14px;
-  color: var(--gray-900);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.search-input:focus-visible {
+  outline-offset: 2px;
 }
 
 .search-input::placeholder {
-  color: var(--gray-400);
+  color: var(--text-tertiary);
 }
 
 .search-input:focus {
-  border-color: var(--gray-400);
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26, 95, 168, 0.1);
 }
 
 .search-clear {
   position: absolute;
-  right: 12px;
-  width: 20px;
-  height: 20px;
+  right: var(--space-1);
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--gray-200);
-  color: var(--gray-600);
-  font-size: 14px;
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  font-size: 1rem;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 .search-clear:hover {
-  background: var(--gray-400);
+  background: var(--gray-600);
   color: white;
 }

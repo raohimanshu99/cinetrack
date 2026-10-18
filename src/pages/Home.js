@@ -40,7 +40,7 @@ function Home() {
       </div>
 
       <div className="home-controls">
-        <SearchBar value={search} onChange={setSearch} placeholder="Search titles, genres..." />
+        <SearchBar value={search} onChange={setSearch} placeholder="e.g. Dune or Sci-Fi" />
         <FilterBar
           activeType={activeType}
           activeGenre={activeGenre}
@@ -50,23 +50,33 @@ function Home() {
         />
       </div>
 
+      <p className="results-count" aria-live="polite" aria-atomic="true">
+        {filtered.length} matching {filtered.length === 1 ? 'title' : 'titles'}
+      </p>
+
       {filtered.length === 0 ? (
-        <div className="empty-state">
-          <p className="empty-icon">◎</p>
-          <p className="empty-text">No results for "{search}"</p>
-          <button className="empty-reset" onClick={() => { setSearch(''); setActiveType('All'); setActiveGenre('All'); }}>
-            Clear filters
+        <section className="empty-state" aria-labelledby="empty-results-title">
+          <p className="empty-icon" aria-hidden="true">◎</p>
+          <h2 id="empty-results-title" className="empty-text">
+            {search
+              ? `No titles match “${search}” with the selected filters.`
+              : 'No titles match these filters.'}
+          </h2>
+          <p className="empty-sub">Try a different search or adjust the selected filters.</p>
+          <button
+            type="button"
+            className="empty-reset"
+            onClick={() => { setSearch(''); setActiveType('All'); setActiveGenre('All'); }}
+          >
+            Reset search and filters
           </button>
-        </div>
+        </section>
       ) : (
-        <>
-          <p className="results-count">{filtered.length} titles</p>
-          <div className="movies-grid">
-            {filtered.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
-        </>
+        <div className="movies-grid">
+          {filtered.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
       )}
     </div>
   );

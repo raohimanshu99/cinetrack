@@ -24,14 +24,17 @@ function Watchlist() {
     return (
       <div className="watchlist-page">
         <div className="watchlist-header">
-          <h1 className="watchlist-title">My Watchlist</h1>
+          <div>
+            <h1 className="watchlist-title">My Watchlist</h1>
+            <p className="watchlist-count" aria-live="polite">0 saved titles</p>
+          </div>
         </div>
-        <div className="watchlist-empty">
-          <p className="empty-icon">◎</p>
-          <p className="empty-text">Your watchlist is empty.</p>
-          <p className="empty-sub">Browse titles and hit <strong>+ Watchlist</strong> to save them here.</p>
+        <section className="watchlist-empty" aria-labelledby="watchlist-empty-title">
+          <p className="watchlist-empty-icon" aria-hidden="true">◎</p>
+          <h2 className="watchlist-empty-title" id="watchlist-empty-title">Your watchlist is empty</h2>
+          <p className="watchlist-empty-copy">Browse titles and use <strong>+ Watchlist</strong> to save them here.</p>
           <Link to="/" className="btn-browse">Browse Titles</Link>
-        </div>
+        </section>
       </div>
     );
   }
@@ -41,7 +44,9 @@ function Watchlist() {
       <div className="watchlist-header">
         <div>
           <h1 className="watchlist-title">My Watchlist</h1>
-          <p className="watchlist-count">{watchlist.length} saved titles</p>
+          <p className="watchlist-count" aria-live="polite">
+            {watchlist.length} saved {watchlist.length === 1 ? 'title' : 'titles'}
+          </p>
         </div>
       </div>
 
@@ -56,12 +61,14 @@ function Watchlist() {
       </div>
 
       
-      <div className="watchlist-filters">
+      <div className="watchlist-filters" role="group" aria-label="Filter watchlist by status">
         {filters.map((f) => (
           <button
+            type="button"
             key={f}
             className={`wl-filter-btn ${activeFilter === f ? 'active' : ''}`}
             onClick={() => setActiveFilter(f)}
+            aria-pressed={activeFilter === f}
           >
             {f}
             {f !== 'All' && counts[f] > 0 && (
@@ -72,7 +79,16 @@ function Watchlist() {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="watchlist-empty-filter">No titles with "{activeFilter}" status yet.</p>
+        <section className="watchlist-empty watchlist-empty-filter" aria-labelledby="watchlist-filter-empty-title">
+          <p className="watchlist-empty-icon" aria-hidden="true">◎</p>
+          <h2 className="watchlist-empty-title" id="watchlist-filter-empty-title">
+            No titles marked “{activeFilter}” yet
+          </h2>
+          <p className="watchlist-empty-copy">
+            Choose All to see every saved title, or browse to add more.
+          </p>
+          <Link to="/" className="btn-browse">Browse Titles</Link>
+        </section>
       ) : (
         <div className="movies-grid">
           {filtered.map((movie) => (
